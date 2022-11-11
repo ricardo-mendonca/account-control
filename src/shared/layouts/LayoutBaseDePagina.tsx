@@ -13,14 +13,10 @@ import { useDrawerContext } from "../contexts";
 interface ILayoutBaseDePagina {
   titulo: string;
   barraDeFerramentas?: ReactNode;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const LayoutBaseDePagina: React.FC<ILayoutBaseDePagina> = ({
-  titulo,
-  barraDeFerramentas,
-  children,
-}) => {
+export const LayoutBaseDePagina: React.FC<ILayoutBaseDePagina> = ({  titulo,  barraDeFerramentas,  children,}) => {
   //const smDown = useMediaQuery(theme.breakpoints.down("sm"));
   //const mdDown = useMediaQuery(theme.breakpoints.down("md"));
   const smDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
