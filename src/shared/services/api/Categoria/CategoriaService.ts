@@ -1,13 +1,13 @@
 import { Api } from "../axios-config";
 
-interface IListagemCategoria {
+export interface IListagemCategoria {
     id: number;
     ds_descricao: string;
     id_usuario: number;
     fl_ativo: string;
     }
 
-interface IDetalheCategoria {
+export interface IDetalheCategoria {
     id: number;
     ds_descricao: string;
     id_usuario: number;
@@ -15,12 +15,12 @@ interface IDetalheCategoria {
 }
 
 
-const get = async (): Promise<IListagemCategoria | Error > => {
+const get = async (): Promise< Error> => {
     try {
-        const {data}=await Api.get('/v1/GetCategoria');
+        const {data, headers } = await Api.get('/v1/GetCategoria');
         if (data) {
-            return data;
-          }
+          return data
+        }
           return new Error('Erro ao listar os registros.');
         } catch (error) {
           console.error(error);

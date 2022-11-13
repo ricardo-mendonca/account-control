@@ -1,6 +1,6 @@
 import { Api } from "../axios-config";
 
-interface IListagemPessoa {
+export interface IListagemPessoa {
     Id: number;
     ds_nome: string;
     ds_email: string;
