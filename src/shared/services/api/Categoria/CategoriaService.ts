@@ -47,7 +47,25 @@ const deleteById = async (id: number): Promise<void | Error> => {
   }
 };
 
+const getById = async (id: number): Promise<IDetalheCategoria | Error> => {
+  try {
+    const { data } = await Api.get(`v1/GetCategoriaId/${id}`);
+
+    if (data) {
+      return data;
+    }
+
+    return new Error('Erro ao consultar o registro.');
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao consultar o registro.');
+  }
+};
+
+
 export const CategoriaService = {
   get,
+  getById,
   deleteById,
+
 };
