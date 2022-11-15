@@ -102,7 +102,7 @@ export const ListagemDeCategorias: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Codigo</TableCell>
+              <TableCell>Ação</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Ativo</TableCell>
             </TableRow>

@@ -16,6 +16,13 @@ export interface IDetalheCategoria {
     qtdTotal: number;
 }
 
+export interface ISubmitCategoria {
+  id: number;
+  ds_descricao: string;
+  fl_ativo: string;
+}
+
+
 type TPessoasComTotalCount = {
   data: IListagemCategoria[];
   totalCount: number;
@@ -62,10 +69,39 @@ const getById = async (id: number): Promise<IDetalheCategoria | Error> => {
   }
 };
 
+const create = async (dados: Omit<ISubmitCategoria, 'id'>): Promise<number | Error> => {
+  try {
+    const { data } = await Api.post<ISubmitCategoria>('/v1/CreateCategoria', dados);
+
+    if (data) {
+      return data.id;
+    }
+
+    return new Error('Erro ao criar o registro.');
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao criar o registro.');
+  }
+};
+
+const updateById = async (id: number, dados: ISubmitCategoria): Promise<void | Error> => {
+  try {
+    console.log("updateById");
+    console.log(dados);
+    await Api.put(`/v1/UpdateCategoria/${id}`, dados);    
+
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
+  }
+};
+
+
 
 export const CategoriaService = {
   get,
   getById,
   deleteById,
-
+  create,
+  updateById,
 };
