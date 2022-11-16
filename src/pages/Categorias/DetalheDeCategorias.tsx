@@ -1,22 +1,21 @@
-import { useEffect, useRef, useState } from "react";
-import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
-import { Form } from "@unform/web";
+import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+
+import { CategoriaService,ISubmitCategoria} from "../../shared/services/api/Categoria/CategoriaService";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { VTextField } from "../../shared/forms";
+import { VTextField, VForm, useVForm } from "../../shared/forms";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import {
-  CategoriaService,
-  ISubmitCategoria,
-} from "../../shared/services/api/Categoria/CategoriaService";
-import { FormHandles } from "@unform/core";
+
+
 
 export const DetalheDeCategorias: React.FC = () => {
+  const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
   const { id = "nova" } = useParams<"id">();
   const navigate = useNavigate();
+  
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
-  const formRef = useRef<FormHandles>(null);
 
   useEffect(() => {
     if (id !== "nova") {
@@ -34,6 +33,11 @@ export const DetalheDeCategorias: React.FC = () => {
           formRef.current?.setData(result);
         }
       });
+    } else {
+      formRef.current?.setData({
+        ds_descricao: '',
+        fl_ativo: '',
+      })
     }
   }, [id]);
 
@@ -45,7 +49,11 @@ export const DetalheDeCategorias: React.FC = () => {
         if (result instanceof Error) {
           alert("Ops!! algo deu ruim! \n" + result.message);
         } else {
-          navigate(`/categorias/detalhe/${result}`);
+          if(isSaveAndClose()){
+            navigate('/categorias');
+          } else{
+            navigate(`/categorias/detalhe/${result}`);
+          }
         }
       });
     } else {
@@ -55,8 +63,9 @@ export const DetalheDeCategorias: React.FC = () => {
         if (result instanceof Error) {
           alert("Ops!! algo deu ruim! \n" + result.message);
         } else {
-          console.log(result);
-          // navigate(`/categorias/detalhe/${result}`);
+          if(isSaveAndClose()){
+            navigate('/categorias');
+          }
         }
       });
     }
@@ -90,15 +99,16 @@ export const DetalheDeCategorias: React.FC = () => {
           mostrarBotaoSalvarEFechar
           mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoApagar={id !== "nova"}
-          aoClicarEmSalvar={() => formRef.current?.submitForm()}
-          aoClicarEmSalvarEFechar={() => formRef.current?.submitForm()}
+
+          aoClicarEmSalvar={save}
+          aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmApagar={() => handleDelete(Number(id))}
           aoClicarEmNovo={() => navigate("/categorias/detalhe/nova")}
           aoClicarEmVoltar={() => navigate("/categorias")}
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box
           margin={1}
           display="flex"
@@ -142,7 +152,7 @@ export const DetalheDeCategorias: React.FC = () => {
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
     </LayoutBaseDePagina>
   );
 };
