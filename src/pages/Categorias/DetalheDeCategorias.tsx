@@ -1,13 +1,23 @@
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import * as yup from 'yup';
 
 import { CategoriaService,ISubmitCategoria} from "../../shared/services/api/Categoria/CategoriaService";
+import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
-import { VTextField, VForm, useVForm } from "../../shared/forms";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 
+interface IFormData{
+  ds_descricao: string;
+  fl_ativo: string;
+}
 
+const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
+  ds_descricao: yup.string().required().min(3).max(30),
+  fl_ativo: yup.string().required(),
+  id: yup.number().default(0)
+});
 
 export const DetalheDeCategorias: React.FC = () => {
   const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
@@ -42,35 +52,54 @@ export const DetalheDeCategorias: React.FC = () => {
   }, [id]);
 
   const handleSave = (dados: ISubmitCategoria) => {
-    setIsLoading(true);
-    if (id === "nova") {
-      CategoriaService.create(dados).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert("Ops!! algo deu ruim! \n" + result.message);
-        } else {
-          if(isSaveAndClose()){
-            navigate('/categorias');
-          } else{
-            navigate(`/categorias/detalhe/${result}`);
-          }
-        }
-      });
-    } else {
-      setIsLoading(true);
-      CategoriaService.updateById(Number(id), dados).then((result) => {
-        setIsLoading(false);
-        if (result instanceof Error) {
-          alert("Ops!! algo deu ruim! \n" + result.message);
-        } else {
-          if(isSaveAndClose()){
-            navigate('/categorias');
-          }
-        }
-      });
-    }
 
-    console.log(dados);
+    formValidationSchema
+      .validate(dados,{ abortEarly: false})
+      .then((dadosValidados) => {
+
+        setIsLoading(true);
+
+        if (id === "nova") {
+          CategoriaService.create(dadosValidados).then((result) => {
+            setIsLoading(false);
+            if (result instanceof Error) {
+              alert("Ops!! algo deu ruim! \n" + result.message);
+            } else {
+              if(isSaveAndClose()){
+                navigate('/categorias');
+              } else{
+                navigate(`/categorias/detalhe/${result}`);
+              }
+            }
+          });
+        } else {
+          setIsLoading(true);
+          CategoriaService.updateById(Number(id), {id: Number(id), ...dadosValidados}).then((result) => {
+            setIsLoading(false);
+            if (result instanceof Error) {
+              alert("Ops!! algo deu ruim! \n" + result.message);
+            } else {
+              if(isSaveAndClose()){
+                navigate('/categorias');
+              }
+            }
+          });
+        }
+
+
+      })
+      .catch((errors: yup.ValidationError) => {
+        
+        const validationErrors: IVFormErrors = {};
+
+        errors.inner.forEach(error => {
+          if (!error.path) return;
+
+          validationErrors[error.path] = error.message;
+        });
+
+        formRef.current?.setErrors(validationErrors);
+      });
   };
 
   const handleDelete = (id: number) => {
