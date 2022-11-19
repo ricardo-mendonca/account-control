@@ -101,8 +101,8 @@ const updateById = async (id: number, dados: ISubmitCategoria): Promise<void | E
 
 export const CategoriaService = {
   get,
+  create,
   getById,
   deleteById,
-  create,
   updateById,
 };
