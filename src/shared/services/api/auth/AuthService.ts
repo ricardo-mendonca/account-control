@@ -18,7 +18,7 @@ const auth = async (
       ds_senha,
     };
 
-    const response = await Api.post("/v1/login", data);
+    const response = await Api().post("/v1/login", data);
 
     console.log("tentei 2");
     console.log(ds_senha);
