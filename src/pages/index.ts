@@ -1,3 +1,4 @@
+export * from './categorias/ListagemDeCategorias';
+export * from './categorias/DetalheDeCategorias';
+export * from './despesas/ListagemDeDespesas'
 export * from './dashboard/Dashboard';
-export * from './Categorias/ListagemDeCategorias';
-export * from './Categorias/DetalheDeCategorias';

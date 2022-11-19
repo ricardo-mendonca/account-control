@@ -45,9 +45,9 @@ export interface IDetalheCategoria {
 }
 
 const getAll = async (dataI = new Date(), dataF = new Date()): Promise<any> => {
- /* try {
+  try {
     const urlRelativa = `/v1/GetDespesaMes?dataI=${dataI}&dataF=${dataF}`;
-    const { data } = await Api.get(urlRelativa);
+    const { data } = await Api().get(urlRelativa);
     if (data) {
       return data;
     }
@@ -57,5 +57,5 @@ const getAll = async (dataI = new Date(), dataF = new Date()): Promise<any> => {
     return new Error(
       (error as { message: string }).message || "Erro ao listar os registros."
     );
-  }*/
+  }
 };
