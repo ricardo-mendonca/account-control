@@ -1,6 +1,6 @@
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import * as yup from 'yup';
 
 import { CategoriaService,ISubmitCategoria} from "../../shared/services/api/Categoria/CategoriaService";
@@ -27,6 +27,13 @@ export const DetalheDeCategorias: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
 
+   //ToggleButtonGroup
+   const [toggleButton, setToggleButton] = useState('Sim');
+   const handleChange = (event: React.MouseEvent<HTMLElement>, newToggleButton: string,) => {
+     setToggleButton(newToggleButton);
+   };
+  
+
   useEffect(() => {
     if (id !== "nova") {
       setIsLoading(true);
@@ -39,7 +46,8 @@ export const DetalheDeCategorias: React.FC = () => {
           navigate("/categorias");
         } else {
           setNome(result.ds_descricao);
-          console.log(result);
+          setToggleButton(result.fl_ativo);
+          
           formRef.current?.setData(result);
         }
       });
@@ -52,11 +60,12 @@ export const DetalheDeCategorias: React.FC = () => {
   }, [id]);
 
   const handleSave = (dados: ISubmitCategoria) => {
-
+    
+    dados.fl_ativo = toggleButton
+    
     formValidationSchema
       .validate(dados,{ abortEarly: false})
       .then((dadosValidados) => {
-
         setIsLoading(true);
 
         if (id === "nova") {
@@ -119,6 +128,8 @@ export const DetalheDeCategorias: React.FC = () => {
     }
   };
 
+ 
+
   return (
     <LayoutBaseDePagina
       titulo={id === "nova" ? "Nova Categoria" : nome}
@@ -169,16 +180,27 @@ export const DetalheDeCategorias: React.FC = () => {
               </Grid>
             </Grid>
 
+         
+
             <Grid container item direction="row">
               <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                <VTextField
-                  fullWidth
-                  name="fl_ativo"
-                  disabled={isLoading}
-                  label="Ativo"
-                />
+                
+              <ToggleButtonGroup
+                  color="primary"
+                  
+                  value={toggleButton}
+                  exclusive
+                  onChange={handleChange}
+                  aria-label="Platform"
+              >
+                  <ToggleButton value="1">SIM</ToggleButton>
+                  <ToggleButton value="0">Não</ToggleButton>    
+              </ToggleButtonGroup>
+
               </Grid>
             </Grid>
+
+            
           </Grid>
         </Box>
       </VForm>
