@@ -40,7 +40,7 @@ interface IDetalhePessoa {
 
 const login = async (): Promise<any> => {
     try {
-        const{ data } = await Api.post('v1/login');
+        const{ data } = await Api().post('v1/login');
     } catch (error) {
         return new Error((error as {message: string}).message || 'Erro ao listar os Registros.');
     }
@@ -48,7 +48,7 @@ const login = async (): Promise<any> => {
 
 const getAll = async (): Promise<any> => {
     try {
-        const {data}=await Api.get('/pessoas?_page=1&_limit=10');
+        const {data}=await Api().get('/pessoas?_page=1&_limit=10');
     } catch (error) {
         
     }
