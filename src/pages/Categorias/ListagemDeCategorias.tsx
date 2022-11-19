@@ -26,7 +26,7 @@ import { Environment } from "../../shared/environment";
 
 export const ListagemDeCategorias: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { debounce } = useDebounce(1000, false);
+  const { debounce } = useDebounce(600, false);
   const navigate = useNavigate();
 
   const [rows, setRows] = useState<IListagemCategoria[]>([]);
@@ -69,13 +69,10 @@ export const ListagemDeCategorias: React.FC = () => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-          
+                   
           setTotalCount(result.totalCount);
           
-
           setRows(result.data);
-          
         }
       });
     });
@@ -120,7 +117,8 @@ export const ListagemDeCategorias: React.FC = () => {
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.ds_descricao}</TableCell>
-                <TableCell>{row.fl_ativo}</TableCell>
+                <TableCell>{row.fl_ativo === "1" ? "Sim" : "Não"}</TableCell>
+                
               </TableRow>
             ))}
           </TableBody>

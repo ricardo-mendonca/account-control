@@ -14,9 +14,11 @@ export const Environment = {
   /**
    * Url base de consultado dos dados dessa aplicação
    */
-  URL_BASE: "http://apicontrol.local/",
+  //URL_BASE : "http://apicontrol.local/",
+  URL_BASE : "https://localhost:44380/",
+
 
 };
 
-//baseURL : "http://apicontrol.local/",
-//baseURL : "https://localhost:44308/",
+//URL_BASE : "http://apicontrol.local/",
+//URL_BASE : "https://localhost:44380/",

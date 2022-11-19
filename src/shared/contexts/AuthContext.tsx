@@ -34,12 +34,6 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
   const handleLogin = useCallback(async (email: string, password: string) => {
     
     const response = await AuthService.auth(email, password);
-    
-    console.log("tentei logar OK");
-    
-
-    console.log(response);
-
 
     if (response instanceof Error) {
       return response.message;
