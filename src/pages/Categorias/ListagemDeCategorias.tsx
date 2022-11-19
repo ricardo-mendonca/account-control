@@ -1,27 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import {
-  CategoriaService,
-  IListagemCategoria,
-} from "../../shared/services/api/Categoria/CategoriaService";
+import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow,} from "@mui/material";
+import { CategoriaService, IListagemCategoria,} from "../../shared/services/api/Categoria/CategoriaService";
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useDebounce } from "../../shared/hooks";
-import {
-  Icon,
-  IconButton,
-  LinearProgress,
-  Pagination,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import { Environment } from "../../shared/environment";
 
 export const ListagemDeCategorias: React.FC = () => {
