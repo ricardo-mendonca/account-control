@@ -9,9 +9,6 @@ const auth = async (
   ds_senha: string
 ): Promise<IAuth | Error> => {
   try {
-    console.log("tentei 2");
-    console.log(ds_senha);
-    console.log(ds_email);
 
     const data = {
       ds_email,
@@ -19,10 +16,6 @@ const auth = async (
     };
 
     const response = await Api().post("/v1/login", data);
-
-    console.log("tentei 2");
-    console.log(ds_senha);
-    console.log(ds_email);
 
     if (response) {
       return response.data;

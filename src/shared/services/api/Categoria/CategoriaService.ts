@@ -87,8 +87,7 @@ const create = async (dados: Omit<ISubmitCategoria, 'id'>): Promise<number | Err
 
 const updateById = async (id: number, dados: ISubmitCategoria): Promise<void | Error> => {
   try {
-    console.log("updateById");
-    console.log(dados);
+
     await Api().put(`/v1/UpdateCategoria/${id}`, dados);    
 
   } catch (error) {
