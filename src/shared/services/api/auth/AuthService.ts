@@ -23,7 +23,7 @@ const auth = async (
     console.log("tentei 2");
     console.log(ds_senha);
     console.log(ds_email);
-    
+
     if (response) {
       return response.data;
     }
