@@ -65,12 +65,12 @@ export const ListagemDeDespesas: React.FC = () => {
           <TableHead>
             <TableRow>
                 <TableCell>Ação</TableCell>
-                <TableCell>ds_descricao</TableCell>
-                <TableCell>ds_categoria</TableCell>
-                <TableCell>dt_vencimento</TableCell>
-                <TableCell>vl_valor_parc</TableCell>
-                <TableCell>ds_pago_descricao</TableCell>
-                <TableCell>ds_parcela</TableCell>
+                <TableCell>Descrição</TableCell>
+                <TableCell>Categoria</TableCell>
+                <TableCell>Vencimento</TableCell>
+                <TableCell>Valor</TableCell>
+                <TableCell>Efetivado</TableCell>
+                <TableCell>Parcela</TableCell>
             </TableRow>
           </TableHead>
 
@@ -78,7 +78,9 @@ export const ListagemDeDespesas: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-		              <IconButton size="small"><Icon>edit</Icon></IconButton>
+                <IconButton size="small" onClick={() => navigate(`/despesas/detalhe/${row.id}`)} >
+                    <Icon>edit</Icon>
+                  </IconButton>
 	              </TableCell>
 	              <TableCell>{row.ds_descricao}</TableCell>
 	              <TableCell>{row.ds_categoria}</TableCell>
