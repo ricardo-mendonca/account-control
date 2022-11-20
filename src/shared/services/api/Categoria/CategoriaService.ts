@@ -33,6 +33,7 @@ const get = async (page = 1, filter = ''): Promise<TPessoasComTotalCount | Error
         const urlRelativa = `/v1/GetCategoria?page=${page}&descricao=${filter}`;
 
         const {data, headers } = await Api().get(urlRelativa);
+        
         if (data) {
           return {
             data, 
