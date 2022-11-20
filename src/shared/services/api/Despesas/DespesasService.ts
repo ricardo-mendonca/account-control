@@ -69,6 +69,20 @@ const get = async (dataI ='', dataF = ''): Promise<any> => {
   }
 };
 
+const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
+  try {
+    const {data} = await Api().get(`v1/GetDespesasId?id=${id}`);
+    if(data){
+      return data;
+    }
+    return new Error('Erro ao consultar o registro')
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao consultar o registro.');
+  }
+};
+
 export const DespesasService = {
   get,
+  getById,
 };
