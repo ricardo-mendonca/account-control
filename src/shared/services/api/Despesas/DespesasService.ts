@@ -50,6 +50,12 @@ export interface IDetalheDespesa {
   ds_parcela: string;
 }
 
+export interface ISubmitCategoria{
+  id: number;
+  ds_descricao: string;
+  id_categoria: string
+}
+
 const get = async (dataI ='', dataF = ''): Promise<any> => {
   try {
     const urlRelativa = `/v1/GetDespesaMes?dataI=${dataI}&dataF=${dataF}`;
@@ -82,7 +88,24 @@ const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
   }
 };
 
+const create = async (dados: Omit<ISubmitCategoria, 'id'>): Promise<void | Error> => {
+  try {
+    const { data } = await Api().post<ISubmitCategoria>('/v1/CreateDespesa', dados);
+
+    if (data) {
+      
+    }
+
+    return new Error('Erro ao criar o registro.');
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao criar o registro.');
+  }
+}
+
+
 export const DespesasService = {
   get,
   getById,
+  create,
 };
