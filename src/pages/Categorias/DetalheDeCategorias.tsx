@@ -98,15 +98,12 @@ export const DetalheDeCategorias: React.FC = () => {
 
       })
       .catch((errors: yup.ValidationError) => {
-        
         const validationErrors: IVFormErrors = {};
 
         errors.inner.forEach(error => {
           if (!error.path) return;
-
           validationErrors[error.path] = error.message;
         });
-
         formRef.current?.setErrors(validationErrors);
       });
   };
