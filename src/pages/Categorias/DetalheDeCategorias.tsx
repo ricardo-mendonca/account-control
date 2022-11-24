@@ -181,7 +181,7 @@ export const DetalheDeCategorias: React.FC = () => {
 
             <Grid container item direction="row">
               <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                
+                <label>Despesa Ativa ? </label>
               <ToggleButtonGroup
                   color="primary"
                   
