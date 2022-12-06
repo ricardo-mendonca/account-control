@@ -1,6 +1,6 @@
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, Grid, LinearProgress, Paper, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, FormControlLabel, Grid, LinearProgress, Paper, Switch, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 import * as yup from 'yup';
 
 import { CategoriaService,ISubmitCategoria} from "../../shared/services/api/Categoria/CategoriaService";
@@ -27,12 +27,12 @@ export const DetalheDeCategorias: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [nome, setNome] = useState("");
 
-   //ToggleButtonGroup
-   const [toggleButton, setToggleButton] = useState('Sim');
-   const handleChange = (event: React.MouseEvent<HTMLElement>, newToggleButton: string,) => {
-     setToggleButton(newToggleButton);
+   
+   //Switch
+   const [checked, setChecked] = useState(true);
+   const handleChangeSwitch = (event: React.ChangeEvent<HTMLInputElement>) => {
+     setChecked(event.target.checked);
    };
-  
 
   useEffect(() => {
     if (id !== "nova") {
@@ -46,8 +46,8 @@ export const DetalheDeCategorias: React.FC = () => {
           navigate("/categorias");
         } else {
           setNome(result.ds_descricao);
-          setToggleButton(result.fl_ativo);
           
+          setChecked(result.fl_ativo === '1' ? true : false);
           formRef.current?.setData(result);
         }
       });
@@ -61,7 +61,7 @@ export const DetalheDeCategorias: React.FC = () => {
 
   const handleSave = (dados: ISubmitCategoria) => {
     
-    dados.fl_ativo = toggleButton
+    dados.fl_ativo =  (checked === true ? '1' : '0');
     
     formValidationSchema
       .validate(dados,{ abortEarly: false})
@@ -179,21 +179,16 @@ export const DetalheDeCategorias: React.FC = () => {
 
          
 
+            
+
             <Grid container item direction="row">
               <Grid item xs={4} sm={4} md={4} lg={4} xl={4}>
-                <label>Despesa Ativa ? </label>
-              <ToggleButtonGroup
-                  color="primary"
-                  
-                  value={toggleButton}
-                  exclusive
-                  onChange={handleChange}
-                  aria-label="Platform"
-              >
-                  <ToggleButton value="1">SIM</ToggleButton>
-                  <ToggleButton value="0">Não</ToggleButton>    
-              </ToggleButtonGroup>
-
+              <label>Despesa Ativa ? </label>
+              <Switch
+                 checked={checked}
+                 onChange={handleChangeSwitch}
+                 inputProps={{ 'aria-label': 'controlled' }}
+              />
               </Grid>
             </Grid>
 
