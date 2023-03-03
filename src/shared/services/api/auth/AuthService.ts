@@ -5,17 +5,17 @@ interface IAuth {
 }
 
 const auth = async (
-  ds_email: string,
-  ds_senha: string
+  email: string,
+  senha: string
 ): Promise<IAuth | Error> => {
   try {
 
     const data = {
-      ds_email,
-      ds_senha,
+      email,
+      senha,
     };
 
-    const response = await Api().post("/v1/login", data);
+    const response = await Api().post("/entrar", data);
 
     if (response) {
       return response.data;

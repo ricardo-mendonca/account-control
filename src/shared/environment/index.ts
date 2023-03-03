@@ -1,3 +1,5 @@
+
+
 export const Environment = {
   /**
    * Define a quantidade de linhas a ser carregada por padrão nas listagens
@@ -14,9 +16,11 @@ export const Environment = {
   /**
    * Url base de consultado dos dados dessa aplicação
    */
-  //URL_BASE : "http://apicontrol.local/",
-  URL_BASE : "https://localhost:44380/",
-
+  URL_BASE : "https://api-account-control-k8xvi.ondigitalocean.app/",
+  //URL_BASE : "https://localhost:44380/",
+  /**
+   * versão da aplicação
+   */
 
 };
 
