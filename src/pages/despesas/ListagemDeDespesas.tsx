@@ -8,10 +8,6 @@ import { DespesasService, IListagemDespesa } from "../../shared/services/api/Des
 import { useDebounce } from "../../shared/hooks";
 import { Environment } from "../../shared/environment";
 
-
-
-
-
 export const ListagemDeDespesas: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce(600, false);
@@ -33,8 +29,9 @@ export const ListagemDeDespesas: React.FC = () => {
     setIsLoading(true);
   
     debounce(()=>{
-   
+      console.log(dataI, dataF);
       DespesasService.get( dataI, dataF)
+
         .then((result) => {
           setIsLoading(false);
 

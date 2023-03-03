@@ -68,7 +68,7 @@ if(toggleButton === '0' || toggleButton === 'null' ){
 
   return (
     <LayoutBaseDePagina
-    titulo={id === "nova" ? "Nova Despesa" : nome}
+    titulo={id === "nova" ? "Nova Despesa" : id}
     barraDeFerramentas={
       <FerramentasDeDetalhe
         textoBotaoNovo="Nova"
