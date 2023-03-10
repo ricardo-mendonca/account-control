@@ -1,6 +1,7 @@
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import { useField } from "@unform/core";
 import { useEffect, useMemo, useState } from "react";
+import { Environment } from "../../../shared/environment";
 import { useDebounce } from "../../../shared/hooks";
 
 import { CategoriaService } from "../../../shared/services/api/Categoria/CategoriaService";
@@ -50,7 +51,7 @@ export const AutoCompleteCategoria: React.FC<IAutoCompleteCidadeProps> = ({ isEx
         setIsLoading(true);
     
         debounce(() => {
-          CategoriaService.get(1, busca  )
+          CategoriaService.get(1,busca, selectedId  )
             .then((result) => {
 
             setIsLoading(false);
@@ -59,13 +60,13 @@ export const AutoCompleteCategoria: React.FC<IAutoCompleteCidadeProps> = ({ isEx
               //alert(result.message);
             } else {
               
-              setOpcoes(result.data.map(categoria => ({id: categoria.id, label: categoria.ds_descricao })));
+              setOpcoes(result.data.map(categoria => ({id: categoria.id, label: categoria.descricao })));
               
 
             }
           });
         });
-      }, [busca]);
+      }, [busca, selectedId]);
 
 
   return (

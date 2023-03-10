@@ -33,10 +33,10 @@ export const AppRoutes = () => {
       <Route path="/pagina-inicial" element={<Dashboard />} />
       
       <Route path="/categorias" element={<ListagemDeCategorias />} />
-      <Route path="/categorias/detalhe/:id" element={<DetalheDeCategorias />} />
+      <Route path="/categorias/:id" element={<DetalheDeCategorias />} />
       
       <Route path="/despesas" element={<ListagemDeDespesas />} />
-      <Route path="/despesas/detalhe/:id" element={<DetalheDeDespesas />} />
+      <Route path="/despesas/:id" element={<DetalheDeDespesas />} />
 
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />

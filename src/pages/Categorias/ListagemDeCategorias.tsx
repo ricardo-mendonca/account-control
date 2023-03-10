@@ -72,7 +72,7 @@ export const ListagemDeCategorias: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate('/categorias/detalhe/nova')}
+          aoClicarEmNovo={() => navigate('/categorias/nova')}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: '1' }, { replace: true })
           }
@@ -96,12 +96,12 @@ export const ListagemDeCategorias: React.FC = () => {
                   <IconButton size="small" onClick={() => handleDelete(row.id)}>
                     <Icon>delete</Icon>
                   </IconButton>
-                  <IconButton size="small" onClick={() => navigate(`/categorias/detalhe/${row.id}`)} >
+                  <IconButton size="small" onClick={() => navigate(`/categorias/${row.id}`)} >
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.ds_descricao}</TableCell>
-                <TableCell>{row.fl_ativo === "1" ? "Sim" : "Não"}</TableCell>
+                <TableCell>{row.descricao}</TableCell>
+                <TableCell>{row.ativo == '1' ? "Sim" : "Não" }</TableCell>
                 
               </TableRow>
             ))}

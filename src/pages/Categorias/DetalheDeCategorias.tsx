@@ -1,22 +1,21 @@
 import { useEffect,  useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Box, FormControlLabel, Grid, LinearProgress, Paper, Switch, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Paper, Switch, Typography } from "@mui/material";
 import * as yup from 'yup';
 
-import { CategoriaService,ISubmitCategoria} from "../../shared/services/api/Categoria/CategoriaService";
+import { CategoriaService} from "../../shared/services/api/Categoria/CategoriaService";
 import { VTextField, VForm, useVForm, IVFormErrors } from "../../shared/forms";
 import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 
 interface IFormData{
-  ds_descricao: string;
-  fl_ativo: string;
+  descricao: string;
+  ativo: string;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-  ds_descricao: yup.string().required().min(3).max(30),
-  fl_ativo: yup.string().required(),
-  id: yup.number().default(0)
+  descricao: yup.string().required().min(3).max(30),
+  ativo: yup.string().required()
 });
 
 export const DetalheDeCategorias: React.FC = () => {
@@ -45,23 +44,23 @@ export const DetalheDeCategorias: React.FC = () => {
           alert(" OPS!! algo deu errado \n" + result.message);
           navigate("/categorias");
         } else {
-          setNome(result.ds_descricao);
+          setNome(result.descricao);
           
-          setChecked(result.fl_ativo === '1' ? true : false);
+          setChecked(result.ativo == '1' ? true : false);
           formRef.current?.setData(result);
         }
       });
     } else {
       formRef.current?.setData({
-        ds_descricao: '',
-        fl_ativo: '',
+        descricao: '',
+        ativo: '',
       })
     }
   }, [id]);
 
-  const handleSave = (dados: ISubmitCategoria) => {
+  const handleSave = (dados: IFormData) => {
     
-    dados.fl_ativo =  (checked === true ? '1' : '0');
+    dados.ativo =  (checked === true ? '1' : '0');
     
     formValidationSchema
       .validate(dados,{ abortEarly: false})
@@ -77,7 +76,7 @@ export const DetalheDeCategorias: React.FC = () => {
               if(isSaveAndClose()){
                 navigate('/categorias');
               } else{
-                navigate(`/categorias/detalhe/${result}`);
+                navigate(`/categorias/${result}`);
               }
             }
           });
@@ -140,7 +139,7 @@ export const DetalheDeCategorias: React.FC = () => {
           aoClicarEmSalvar={save}
           aoClicarEmSalvarEFechar={saveAndClose}
           aoClicarEmApagar={() => handleDelete(Number(id))}
-          aoClicarEmNovo={() => navigate("/categorias/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/categorias/nova")}
           aoClicarEmVoltar={() => navigate("/categorias")}
         />
       }
@@ -169,7 +168,7 @@ export const DetalheDeCategorias: React.FC = () => {
               <Grid item xs={12} sm={8} md={6} lg={6} xl={6}>
                 <VTextField
                   fullWidth
-                  name="ds_descricao"
+                  name="descricao"
                   disabled={isLoading}
                   label="Categoria"
                   onChange={e => setNome(e.target.value) }
