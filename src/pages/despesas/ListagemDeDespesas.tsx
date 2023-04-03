@@ -1,4 +1,4 @@
-import { debounce, Icon,IconButton,LinearProgress,Paper,Table,TableBody,TableCell,TableContainer,TableFooter,TableHead,TableRow,} from "@mui/material";
+import { Icon,IconButton,LinearProgress,Paper,Table,TableBody,TableCell,TableContainer,TableFooter,TableHead,TableRow,} from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
@@ -16,21 +16,22 @@ export const ListagemDeDespesas: React.FC = () => {
 
   const [rows, setRows] = useState<IListagemDespesa[]>([]);
 
-  const dataI = useMemo(() => {
-    return searchParams.get("dataI") || "";
+  const busca = useMemo(() => {
+    return searchParams.get("busca") || "";
   }, [searchParams]);
 
-  const dataF = useMemo(() => {
-    return searchParams.get("dataF") || "";
+  const pagina = useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
   }, [searchParams]);
+
 
   
   useEffect(() => {
     setIsLoading(true);
   
     debounce(()=>{
-      console.log(dataI, dataF);
-      DespesasService.get( dataI, dataF)
+      
+      DespesasService.get( pagina,busca)
 
         .then((result) => {
           setIsLoading(false);
@@ -45,7 +46,7 @@ export const ListagemDeDespesas: React.FC = () => {
         });
     });
 
-  },[dataI, dataF]);
+  },[debounce, pagina, busca]);
 
   return (
     <LayoutBaseDePagina
@@ -53,7 +54,7 @@ export const ListagemDeDespesas: React.FC = () => {
       barraDeFerramentas={
         <FerramentasDaListagem
           textoBotaoNovo="Nova Despesa"
-          aoClicarEmNovo={() => navigate("/despesas/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/despesa/nova")}
         />
       }
     >
@@ -75,16 +76,16 @@ export const ListagemDeDespesas: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                <IconButton size="small" onClick={() => navigate(`/despesas/detalhe/${row.id}`)} >
+                <IconButton size="small" onClick={() => navigate(`/despesas/${row.id}`)} >
                     <Icon>edit</Icon>
                   </IconButton>
 	              </TableCell>
-	              <TableCell>{row.ds_descricao}</TableCell>
-	              <TableCell>{row.ds_categoria}</TableCell>
-	              <TableCell>{row.dt_vencimento}</TableCell>
-	              <TableCell>{row.vl_valor_parc}</TableCell>
-	              <TableCell>{row.ds_pago_descricao}</TableCell>
-	              <TableCell>{row.ds_parcela}</TableCell>
+	              <TableCell>{row.id}</TableCell>
+	              <TableCell>{row.descricao}</TableCell>
+	              <TableCell>{row.descricao}</TableCell>
+	              <TableCell>{row.despesaFixa}</TableCell>
+	              <TableCell>{row.valorParcela}</TableCell>
+	              <TableCell>{row.parcela}</TableCell>
             </TableRow>
             ))}
           </TableBody>

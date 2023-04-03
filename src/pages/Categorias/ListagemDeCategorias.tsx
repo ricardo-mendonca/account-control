@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -60,7 +61,7 @@ export const ListagemDeCategorias: React.FC = () => {
         }
       });
     });
-  }, [busca, pagina ]);
+  }, [busca, debounce, pagina]);
 
 
 
@@ -101,6 +102,7 @@ export const ListagemDeCategorias: React.FC = () => {
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.descricao}</TableCell>
+                
                 <TableCell>{row.ativo == '1' ? "Sim" : "Não" }</TableCell>
                 
               </TableRow>
