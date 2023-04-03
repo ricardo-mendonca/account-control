@@ -28,7 +28,7 @@ export const AppRoutes = () => {
       },
       {
         icon: 'account_balance',
-        path: '/despesas',
+        path: '/despesa',
         label: 'Despesas',
       },
    
@@ -43,11 +43,11 @@ export const AppRoutes = () => {
       <Route path="/categorias" element={<ListagemDeCategorias />} />
       <Route path="/categorias/:id" element={<DetalheDeCategorias />} />
       
-      <Route path="/despesas" element={<ListagemDeDespesas />} />
-      <Route path="/despesas/:id" element={<DetalheDeDespesas />} />
-
       <Route path="/bancos" element={<ListagemDeBanco />} />
       <Route path="/bancos/:id" element={<DetalheDeBanco />} />
+
+      <Route path="/despesa" element={<ListagemDeDespesas />} />
+      <Route path="/despesa/:id" element={<DetalheDeDespesas />} />
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>

@@ -1,69 +1,80 @@
+import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
 export interface IListagemDespesa {
   id: number;
-  id_usuario: number;
-  id_categoria: number;
-  cd_qtd_parc: number;
-  cd_qtd_tot_parc: number;
-  vl_valor_parc: number;
-  vl_valor_multa: number;
-  vl_valor_desconto: number;
-  cd_dia: number;
-  cd_mes: number;
-  cd_ano: number;
-  fl_despesa_fixa: boolean;
-  fl_pago: boolean;
-  dt_vencimento: string;
-  dt_pagamento: Date;
-  dt_cadastro: Date;
-  dt_alteracao: Date;
-  ds_descricao: string;
-  fl_ativo: string;
-  ds_categoria: string;
-  ds_pago_descricao: string;
-  ds_parcela: string;
+  descricao: string;
+  qtdParcela: number;
+  parcela: number;
+  despesaFixa: boolean;
+  ativo: boolean;
+  pago: boolean;
+  valorParcela: number;
+  valorMulta: number;
+  valorDesconto: number;
+  dataCadastro: Date;
+  dataVencimento: Date;
+  dataPagamento: Date;
+  dataAlteracao: Date;
+  bancoId: number;
+  categoriaId: number;
+  usuarioId: number;
 }
 
 export interface IDetalheDespesa {
   id: number;
-  id_usuario: number;
-  id_categoria: number;
-  cd_qtd_parc: number;
-  cd_qtd_tot_parc: number;
-  vl_valor_parc: number;
-  vl_valor_multa: number;
-  vl_valor_desconto: number;
-  cd_dia: number;
-  cd_mes: number;
-  cd_ano: number;
-  fl_despesa_fixa: boolean;
-  fl_pago: boolean;
-  dt_vencimento: string;
-  dt_pagamento: Date;
-  dt_cadastro: Date;
-  dt_alteracao: Date;
-  ds_descricao: string;
-  fl_ativo: string;
-  ds_categoria: string;
-  ds_pago_descricao: string;
-  ds_parcela: string;
+  descricao: string;
+  qtdParcela: number;
+  parcela: number;
+  despesaFixa: boolean;
+  ativo: boolean;
+  pago: boolean;
+  valorParcela: number;
+  valorMulta: number;
+  valorDesconto: number;
+  dataCadastro: Date;
+  dataVencimento: Date;
+  dataPagamento: Date;
+  dataAlteracao: Date;
+  bancoId: number;
+  categoriaId: number;
+  usuarioId: number;
 }
 
-export interface ISubmitCategoria{
+export interface ISubmitDespesa {
   id: number;
-  ds_descricao: string;
-  id_categoria: string
+  descricao: string;
+  qtdParcela: number;
+  parcela: number;
+  despesaFixa: boolean;
+  ativo: boolean;
+  pago: boolean;
+  valorParcela: number;
+  valorMulta: number;
+  valorDesconto: number;
+  dataCadastro: Date;
+  dataVencimento: Date;
+  dataPagamento: Date;
+  dataAlteracao: Date;
+  bancoId: number;
+  categoriaId: number;
+  usuarioId: number;
 }
 
-const get = async (dataI ='', dataF = ''): Promise<any> => {
+type TDespesasComTotalCount = {
+  data: IListagemDespesa[];
+  totalCount: number;
+}
+
+const get = async (page = 1, filter = '', id = 0): Promise<TDespesasComTotalCount | Error> => {
   try {
-    const urlRelativa = `/v1/GetDespesaMes?dataI=${dataI}&dataF=${dataF}`;
+    const urlRelativa = `/despesa?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
 
     const { data, headers } = await Api().get(urlRelativa);
     if (data) {
       return {
-        data
+        data,
+        totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
       };
     }
     return new Error("Erro ao listar os registros.");
@@ -77,8 +88,8 @@ const get = async (dataI ='', dataF = ''): Promise<any> => {
 
 const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
   try {
-    const {data} = await Api().get(`v1/GetDespesasId?id=${id}`);
-    if(data){
+    const { data } = await Api().get(`/despesa?id=${id}`);
+    if (data) {
       return data;
     }
     return new Error('Erro ao consultar o registro')
@@ -88,12 +99,12 @@ const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
   }
 };
 
-const create = async (dados: Omit<ISubmitCategoria, 'id'>): Promise<void | Error> => {
+const create = async (dados: Omit<ISubmitDespesa, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api().post<ISubmitCategoria>('/v1/CreateDespesa', dados);
+    const { data } = await Api().post<number>('/despesa', dados);
 
     if (data) {
-      
+      return data;
     }
 
     return new Error('Erro ao criar o registro.');
@@ -103,9 +114,30 @@ const create = async (dados: Omit<ISubmitCategoria, 'id'>): Promise<void | Error
   }
 }
 
+const deleteById = async (id: number): Promise<void | Error> => {
+  try {
+    await Api().delete(`/despesa/${id}`);
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');
+  }
+};
+
+const updateById = async (id: number, dados: ISubmitDespesa): Promise<void | Error> => {
+  try {
+
+    await Api().put(`/despesa/${id}`, dados);    
+
+  } catch (error) {
+    console.error(error);
+    return new Error((error as { message: string }).message || 'Erro ao atualizar o registro.');
+  }
+};
 
 export const DespesasService = {
   get,
   getById,
   create,
+  deleteById,
+  updateById
 };
