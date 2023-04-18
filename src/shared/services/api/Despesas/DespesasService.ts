@@ -12,10 +12,10 @@ export interface IListagemDespesa {
   valorParcela: number;
   valorMulta: number;
   valorDesconto: number;
-  dataCadastro: Date;
+  dataCadastro: string;
   dataVencimento: Date;
-  dataPagamento: Date;
-  dataAlteracao: Date;
+  dataPagamento: string;
+  dataAlteracao: string;
   bancoId: number;
   categoriaId: number;
   usuarioId: number;
@@ -68,10 +68,11 @@ type TDespesasComTotalCount = {
 
 const get = async (page = 1, filter = '', id = 0): Promise<TDespesasComTotalCount | Error> => {
   try {
-    const urlRelativa = `/despesa?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
+    const urlRelativa = `/GetDespesaMes?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
 
     const { data, headers } = await Api().get(urlRelativa);
     if (data) {
+      
       return {
         data,
         totalCount: Number(headers['x-total-count'] || Environment.LIMITE_DE_LINHAS),
@@ -88,8 +89,14 @@ const get = async (page = 1, filter = '', id = 0): Promise<TDespesasComTotalCoun
 
 const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
   try {
-    const { data } = await Api().get(`/despesa?id=${id}`);
+    console.log("despesa1");
+    console.log(id);
+    const { data } = await Api().get(`/GetDespesasId?id=${id}`);
+    console.log("despesa2");
+    console.log(data);
     if (data) {
+      console.log("despesa");
+      console.log(data);
       return data;
     }
     return new Error('Erro ao consultar o registro')
@@ -101,7 +108,7 @@ const getById = async (id: number): Promise<IDetalheDespesa | Error> => {
 
 const create = async (dados: Omit<ISubmitDespesa, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api().post<number>('/despesa', dados);
+    const { data } = await Api().post<number>('/CreateDespesa', dados);
 
     if (data) {
       return data;
@@ -116,7 +123,7 @@ const create = async (dados: Omit<ISubmitDespesa, 'id'>): Promise<number | Error
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api().delete(`/despesa/${id}`);
+    await Api().delete(`/DeleteDespesa/${id}`);
   } catch (error) {
     console.error(error);
     return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');
@@ -126,7 +133,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 const updateById = async (id: number, dados: ISubmitDespesa): Promise<void | Error> => {
   try {
 
-    await Api().put(`/despesa/${id}`, dados);    
+    await Api().put(`/UpdateDespesa/${id}`, dados);    
 
   } catch (error) {
     console.error(error);

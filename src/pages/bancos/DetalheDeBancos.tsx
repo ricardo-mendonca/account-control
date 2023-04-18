@@ -10,22 +10,22 @@ import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 
 interface IFormData {
-    nome: string;
+    descricao: string;
     ativo: string;
 }
 
 const formValidationSchema: yup.SchemaOf<IFormData> = yup.object().shape({
-    nome: yup.string().required().min(3).max(30),
+    descricao: yup.string().required().min(3).max(30),
     ativo: yup.string().required()
 });
 
-export const DetalheDeBanco = () => {
+export const DetalheDeBancos: React.FC = () => {
     const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
     const { id = "nova" } = useParams<"id">();
     const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState(false);
-    const [nome, setNome] = useState("");
+    const [descricao, setDescricao] = useState("");
 
 
     //Switch
@@ -45,7 +45,7 @@ export const DetalheDeBanco = () => {
                     alert(" OPS!! algo deu errado \n" + result.message);
                     navigate("/bancos");
                 } else {
-                    setNome(result.nome);
+                    setDescricao(result.descricao);
 
                     setChecked(result.ativo == '1' ? true : false);
                     formRef.current?.setData(result);
@@ -53,7 +53,7 @@ export const DetalheDeBanco = () => {
             });
         } else {
             formRef.current?.setData({
-                nome: '',
+                descricao: '',
                 ativo: '',
             })
         }
@@ -129,7 +129,7 @@ export const DetalheDeBanco = () => {
 
     return (
         <LayoutBaseDePagina
-            titulo={id === "novo" ? "Novo Banco" : nome}
+            titulo={id === "novo" ? "Novo Banco" : descricao}
             barraDeFerramentas={
                 <FerramentasDeDetalhe
                     textoBotaoNovo="Novo"
@@ -169,10 +169,10 @@ export const DetalheDeBanco = () => {
                             <Grid item xs={12} sm={8} md={6} lg={6} xl={6}>
                                 <VTextField
                                     fullWidth
-                                    name="nome"
+                                    name="descricao"
                                     disabled={isLoading}
                                     label="Nome"
-                                    onChange={e => setNome(e.target.value)}
+                                    onChange={e => setDescricao(e.target.value)}
                                 />
                             </Grid>
                         </Grid>
