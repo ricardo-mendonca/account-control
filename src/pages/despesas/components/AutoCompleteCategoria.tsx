@@ -1,7 +1,6 @@
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import { useField } from "@unform/core";
 import { useEffect, useMemo, useState } from "react";
-import { Environment } from "../../../shared/environment";
 import { useDebounce } from "../../../shared/hooks";
 
 import { CategoriaService } from "../../../shared/services/api/Categoria/CategoriaService";
@@ -18,7 +17,7 @@ type TAutoCompleteOption = {
   }
 
 export const AutoCompleteCategoria: React.FC<IAutoCompleteCidadeProps> = ({ isExternalLoading = false }) => {
-    const { fieldName, registerField, defaultValue, error, clearError } = useField('id_categoria');
+    const { fieldName, registerField,  error, clearError } = useField('id_categoria');
     const { debounce } = useDebounce();
     
     const [selectedId, setSelectedId] = useState<number | undefined>(undefined);
@@ -66,7 +65,7 @@ export const AutoCompleteCategoria: React.FC<IAutoCompleteCidadeProps> = ({ isEx
             }
           });
         });
-      }, [busca, selectedId]);
+      }, [busca, debounce, selectedId]);
 
 
   return (
