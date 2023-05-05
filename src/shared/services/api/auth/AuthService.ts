@@ -15,7 +15,7 @@ const auth = async (
       senha,
     };
 
-    const response = await Api().post("/entrar", data);
+    const response = await Api().post("/login", data);
 
     if (response) {
       return response.data;

@@ -3,19 +3,19 @@ import { Api } from "../axios-config";
 
 export interface IListagemBanco {
     id: number;
-    nome: string;
+    descricao: string;
     ativo: string;
 }
 
 export interface IDetalheBanco {
     id: number;
-    nome: string;
+    descricao: string;
     ativo: string;
 }
 
 export interface ISubmitBanco {
     id: number;
-    nome: string;
+    descricao: string;
     ativo: string;
 }
 
@@ -28,7 +28,7 @@ type TBancosComTotalCount = {
 
 const get = async (page = 1, filter = '', id = 0): Promise<TBancosComTotalCount | Error> => {
     try {
-        const urlRelativa = `/banco?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
+        const urlRelativa = `/GetBancos?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
 
         const { data, headers } = await Api().get(urlRelativa);
         console.log(data);
@@ -47,7 +47,7 @@ const get = async (page = 1, filter = '', id = 0): Promise<TBancosComTotalCount 
 
 const deleteById = async (id: number): Promise<void | Error> => {
     try {
-        await Api().delete(`/banco/${id}`);
+        await Api().delete(`/DeleteBanco/${id}`);
     } catch (error) {
         console.error(error);
         return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');
@@ -56,7 +56,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 
 const getById = async (id: number): Promise<IDetalheBanco | Error> => {
     try {
-        const { data } = await Api().get(`/banco/${id}`);
+        const { data } = await Api().get(`/GetBancoId/${id}`);
 
         if (data) {
             return data;
@@ -71,7 +71,7 @@ const getById = async (id: number): Promise<IDetalheBanco | Error> => {
 
 const create = async (dados: Omit<IDetalheBanco, 'id'>): Promise<number | Error> => {
     try {
-        const { data } = await Api().post<number>('/banco', dados);
+        const { data } = await Api().post<number>('/CreateBanco', dados);
 
         if (data) {
             return data;
@@ -87,7 +87,7 @@ const create = async (dados: Omit<IDetalheBanco, 'id'>): Promise<number | Error>
 const updateById = async (id: number, dados: ISubmitBanco): Promise<void | Error> => {
     try {
 
-        await Api().put(`/banco/${id}`, dados);
+        await Api().put(`/UpdateBanco/${id}`, dados);
 
     } catch (error) {
         console.error(error);

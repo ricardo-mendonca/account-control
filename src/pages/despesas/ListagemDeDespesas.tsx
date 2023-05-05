@@ -1,20 +1,21 @@
-import { Icon,IconButton,LinearProgress,Paper,Table,TableBody,TableCell,TableContainer,TableFooter,TableHead,TableRow,} from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 
+import { Icon,IconButton,LinearProgress,Paper,Table,TableBody,TableCell,TableContainer,TableFooter,TableHead,TableRow,} from "@mui/material";
+import { DespesasService, IListagemDespesa } from "../../shared/services/api/Despesas/DespesasService";
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { DespesasService, IListagemDespesa } from "../../shared/services/api/Despesas/DespesasService";
-import { useDebounce } from "../../shared/hooks";
 import { Environment } from "../../shared/environment";
+import { useDebounce } from "../../shared/hooks";
 
 export const ListagemDeDespesas: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce(600, false);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const [rows, setRows] = useState<IListagemDespesa[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
 
   const busca = useMemo(() => {
     return searchParams.get("busca") || "";
@@ -29,24 +30,24 @@ export const ListagemDeDespesas: React.FC = () => {
   useEffect(() => {
     setIsLoading(true);
   
-    debounce(()=>{
-      
+    debounce(()=>{      
       DespesasService.get( pagina,busca)
-
         .then((result) => {
           setIsLoading(false);
 
           if (result instanceof Error) {
             alert(result.message);
           } else {
+            setTotalCount(result.totalCount);
             
+
+            console.log(result);
             setRows(result.data);
           }
 
         });
     });
-
-  },[debounce, pagina, busca]);
+  }, [busca, debounce, pagina]);
 
   return (
     <LayoutBaseDePagina
@@ -63,9 +64,9 @@ export const ListagemDeDespesas: React.FC = () => {
           <TableHead>
             <TableRow>
                 <TableCell>Ação</TableCell>
+                <TableCell>ID</TableCell>
                 <TableCell>Descrição</TableCell>
-                <TableCell>Categoria</TableCell>
-                <TableCell>Vencimento</TableCell>
+                <TableCell>Valor</TableCell>
                 <TableCell>Valor</TableCell>
                 <TableCell>Efetivado</TableCell>
                 <TableCell>Parcela</TableCell>
@@ -76,14 +77,14 @@ export const ListagemDeDespesas: React.FC = () => {
             {rows.map((row) => (
               <TableRow key={row.id}>
                 <TableCell>
-                <IconButton size="small" onClick={() => navigate(`/despesas/${row.id}`)} >
+                <IconButton size="small" onClick={() => navigate(`/despesa/${row.id}`)} >
                     <Icon>edit</Icon>
                   </IconButton>
 	              </TableCell>
 	              <TableCell>{row.id}</TableCell>
 	              <TableCell>{row.descricao}</TableCell>
-	              <TableCell>{row.descricao}</TableCell>
-	              <TableCell>{row.despesaFixa}</TableCell>
+	              <TableCell>{row.valorParcela}</TableCell>
+	              <TableCell>{row.pago}</TableCell>
 	              <TableCell>{row.valorParcela}</TableCell>
 	              <TableCell>{row.parcela}</TableCell>
             </TableRow>

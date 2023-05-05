@@ -17,7 +17,8 @@ export const Environment = {
    * Url base de consultado dos dados dessa aplicação
    */
   //URL_BASE : "https://api-account-control-k8xvi.ondigitalocean.app/",
-  URL_BASE : "http://localhost:3333/",
+  //URL_BASE : "http://localhost:3333/",
+  URL_BASE : "https://localhost:44380/v1/",
   /**
    * versão da aplicação
    */

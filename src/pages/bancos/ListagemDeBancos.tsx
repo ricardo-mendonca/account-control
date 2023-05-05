@@ -97,7 +97,7 @@ export const ListagemDeBanco: React.FC = () => {
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                <TableCell>{row.nome}</TableCell>
+                <TableCell>{row.descricao}</TableCell>
                 <TableCell>{row.ativo == '1' ? "Sim" : "Não"}</TableCell>
 
               </TableRow>

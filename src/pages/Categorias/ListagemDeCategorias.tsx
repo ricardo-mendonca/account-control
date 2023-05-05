@@ -6,8 +6,8 @@ import { Icon, IconButton, LinearProgress, Pagination, Paper, Table, TableBody, 
 import { CategoriaService, IListagemCategoria,} from "../../shared/services/api/Categoria/CategoriaService";
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { useDebounce } from "../../shared/hooks";
 import { Environment } from "../../shared/environment";
+import { useDebounce } from "../../shared/hooks";
 
 export const ListagemDeCategorias: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();

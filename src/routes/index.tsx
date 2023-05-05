@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useDrawerContext } from '../shared/contexts';
-import { Dashboard, DetalheDeCategorias, ListagemDeBanco, ListagemDeCategorias, ListagemDeDespesas,DetalheDeDespesas,DetalheDeBanco} from '../pages';
-
-
-
+import { Dashboard, DetalheDeCategorias, ListagemDeBanco, ListagemDeCategorias, ListagemDeDespesas,DetalheDeDespesas, DetalheDeBancos} from '../pages';
 
 export const AppRoutes = () => {
   const { setDrawerOptions } = useDrawerContext();
@@ -30,11 +27,9 @@ export const AppRoutes = () => {
         icon: 'account_balance',
         path: '/despesa',
         label: 'Despesas',
-      },
-   
-      
+      },      
     ]);
-  }, []);
+  },[]);
 
   return (
     <Routes>
@@ -44,7 +39,7 @@ export const AppRoutes = () => {
       <Route path="/categorias/:id" element={<DetalheDeCategorias />} />
       
       <Route path="/bancos" element={<ListagemDeBanco />} />
-      <Route path="/bancos/:id" element={<DetalheDeBanco />} />
+      <Route path="/bancos/:id" element={<DetalheDeBancos />} />
 
       <Route path="/despesa" element={<ListagemDeDespesas />} />
       <Route path="/despesa/:id" element={<DetalheDeDespesas />} />

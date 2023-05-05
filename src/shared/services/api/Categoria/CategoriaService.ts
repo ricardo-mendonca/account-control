@@ -29,7 +29,7 @@ type TPessoasComTotalCount = {
 
 const get = async (page = 1, filter = '', id = 0): Promise<TPessoasComTotalCount | Error> => {
     try {
-        const urlRelativa = `/categoria?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
+        const urlRelativa = `/GetCategoria?page=${page}&limit=${Environment.LIMITE_DE_LINHAS}&filter=${filter}&id=${id}`;
 
         const { data, headers } = await Api().get(urlRelativa);
         console.log(data);
@@ -48,7 +48,7 @@ const get = async (page = 1, filter = '', id = 0): Promise<TPessoasComTotalCount
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api().delete(`/categoria/${id}`);
+    await Api().delete(`/DeleteCategoria/${id}`);
   } catch (error) {
     console.error(error);
     return new Error((error as { message: string }).message || 'Erro ao apagar o registro.');
@@ -57,7 +57,7 @@ const deleteById = async (id: number): Promise<void | Error> => {
 
 const getById = async (id: number): Promise<IDetalheCategoria | Error> => {
   try {
-    const { data } = await Api().get(`/categoria/${id}`);
+    const { data } = await Api().get(`/GetCategoriaId/${id}`);
 
     if (data) {
       return data;
@@ -72,7 +72,7 @@ const getById = async (id: number): Promise<IDetalheCategoria | Error> => {
 
 const create = async (dados: Omit<IDetalheCategoria, 'id'>): Promise<number | Error> => {
   try {
-    const { data } = await Api().post<number>('/categoria', dados);
+    const { data } = await Api().post<number>('/CreateCategoria', dados);
 
     if (data) {
       return data;
@@ -88,7 +88,7 @@ const create = async (dados: Omit<IDetalheCategoria, 'id'>): Promise<number | Er
 const updateById = async (id: number, dados: ISubmitCategoria): Promise<void | Error> => {
   try {
 
-    await Api().put(`/categoria/${id}`, dados);    
+    await Api().put(`/UpdateCategoria/${id}`, dados);    
 
   } catch (error) {
     console.error(error);
