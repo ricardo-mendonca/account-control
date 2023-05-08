@@ -70,6 +70,7 @@ export const DetalheDeBancos: React.FC = () => {
 
                 if (id === "nova") {
                     BancosService.create(dadosValidados).then((result) => {
+                       
                         setIsLoading(false);
                         if (result instanceof Error) {
                             alert("Ops!! algo deu ruim! \n" + result.message);
